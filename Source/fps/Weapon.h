@@ -86,11 +86,21 @@ public:
 	void ShowMesh();
 
 	/** Fires a projectile. */
-	void Fire(FVector Loc, FRotator Rot);
+	void Fire();
 
 	void Reload();
 
 	
+public:
 
+	int getDamage();
+
+	int getRange();
+
+	int getAmmoInClip();
+	int getMaxAmmoInClip();
+
+	void EmptyClip();
+	
 
 };

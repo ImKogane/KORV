@@ -140,10 +140,11 @@ void AfpsCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 
 void AfpsCharacter::OnFire()
 {
-
+		/*
 		UWorld* const World = GetWorld();
 		if (World != nullptr)
 		{
+
 			if (AmmoInClip > 0)
 			{
 
@@ -235,6 +236,92 @@ void AfpsCharacter::OnFire()
 					{
 						UGameplayStatics::PlaySoundAtLocation(this, EmptyClipSound, GetActorLocation());
 					}
+			}
+				
+		}
+		*/
+
+		UWorld* const World = GetWorld();
+		if (World != nullptr)
+		{
+
+			if (actualWeapon->getAmmoInClip() > 0)
+			{
+
+				const FRotator SpawnRotation = GetControlRotation();
+				// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+				const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+
+				//Set Spawn Collision Handling Override
+				FActorSpawnParameters ActorSpawnParams;
+				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+				// spawn the projectile at the muzzle
+				//World->SpawnActor<AfpsProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+				//Spawn Particle
+				UGameplayStatics::SpawnEmitterAtLocation(World, ShotParticle, SpawnLocation, SpawnRotation);
+				actualWeapon->Fire();
+
+				//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Shoot");
+
+
+
+
+
+				//Line trace
+				FVector Loc = SpawnLocation;
+				FRotator Rot = SpawnRotation;
+
+				GetController()->GetPlayerViewPoint(Loc, Rot);
+
+				FVector Start = Loc;
+
+				FVector End = Start + (Rot.Vector() * actualWeapon->getRange());
+
+
+				FHitResult* Hit = new FHitResult;
+				FCollisionQueryParams test;
+				if (World->LineTraceSingleByChannel(*Hit, Start, End, ECC_Visibility, test))
+				{
+					//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "Impact");
+					UGameplayStatics::SpawnEmitterAtLocation(World, ImpactParticle, Hit->ImpactPoint);
+
+					if (Hit->GetActor()->GetName().Contains("MyAmy"))
+					{
+						
+
+						AEnnemiess* enemyTouch = Cast<AEnnemiess>(Hit->GetActor());
+						if (enemyTouch)
+						{
+							enemyTouch->loseLife(actualWeapon->getDamage());	//Deal damage to enemy
+							if (enemyTouch->getIsDead() == true)
+							{
+								score += enemyTouch->getScore();
+								GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, FString::Printf(TEXT("%lld"), score));
+							}
+
+						}
+
+					}
+
+				}
+
+				// try and play a firing animation if specified
+				if (FireAnimation != nullptr)
+				{
+					// Get the animation object for the arms mesh
+					UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+					if (AnimInstance != nullptr)
+					{
+						AnimInstance->Montage_Play(FireAnimation, 1.f);
+					}
+				}
+
+			}
+			else
+			{
+				actualWeapon->EmptyClip();
 			}
 				
 		}

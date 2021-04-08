@@ -38,73 +38,11 @@ AWeapon::AWeapon()
 
 }
 
-
-void AWeapon::Fire(FVector Loc, FRotator Rot)
+void AWeapon::Fire()
 {
-	UWorld* const World = GetWorld();
-	if (World != nullptr)
-	{
-		if (AmmoInClip > 0)
-		{
-
-			FRotator SpawnRotation;
-			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-			const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
-
-			//Set Spawn Collision Handling Override
-			FActorSpawnParameters ActorSpawnParams;
-			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-
-			//Spawn Particle
-			UGameplayStatics::SpawnEmitterAtLocation(World, ShotParticle, SpawnLocation, SpawnRotation);
-			AmmoInClip = AmmoInClip - 1;
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Shoot");
-
-
-
-			//Line trace
-			Loc = SpawnLocation;
-			Rot = SpawnRotation;
-
-			//GetController()->GetPlayerViewPoint(Loc, Rot);
-
-			FVector Start = Loc;
-			FVector End = Start + (Rot.Vector() * range);
-
-			FHitResult Hit;
-			FCollisionQueryParams test;
-			if (World->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, test))
-			{
-				//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "Impact");
-				UGameplayStatics::SpawnEmitterAtLocation(World, ImpactParticle, Hit.ImpactPoint);
-
-
-				//DrawDebugLine(World, Start, Hit.ImpactPoint, FColor::Cyan, false, 10.0f);
-			}
-
-
-			// try and play the sound if specified
-			if (FireSound != nullptr)
-			{
-				UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-			}
-
-		}
-		else
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "No ammo in clip");
-
-			// try and play the EmptyClip sound if specified
-			if (EmptyClipSound != nullptr)
-			{
-				UGameplayStatics::PlaySoundAtLocation(this, EmptyClipSound, GetActorLocation());
-			}
-		}
-
-	}
-
+	AmmoInClip = AmmoInClip - 1;
 }
+	
 
 void AWeapon::Reload()
 {
@@ -127,4 +65,29 @@ void AWeapon::HideMesh()
 void AWeapon::ShowMesh()
 {
 	FP_Gun->SetHiddenInGame(false, true);
+}
+
+int AWeapon::getDamage()
+{
+	return damage;
+}
+
+int AWeapon::getRange()
+{
+	return range;
+}
+
+int AWeapon::getAmmoInClip()
+{
+	return AmmoInClip;
+}
+
+int AWeapon::getMaxAmmoInClip()
+{
+	return MaxAmmoInClip;
+}
+
+void AWeapon::EmptyClip()
+{
+	UGameplayStatics::PlaySoundAtLocation(this, EmptyClipSound, GetActorLocation());
 }
