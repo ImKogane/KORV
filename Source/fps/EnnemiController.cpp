@@ -53,12 +53,12 @@ void AEnnemiController::spawnEnnemies()
 
 		if (compteurEz != 0)
 		{
-			GetWorld()->SpawnActor<AAmy>(Location, Rotation, SpawnInfo);
+			GetWorld()->SpawnActor<AAmy>(MyAmy, Location, Rotation, SpawnInfo);
 			compteurEz--;
 		}
 		else if (compteurNormal != 0)
 		{
-			GetWorld()->SpawnActor<AAmyZombie>(Location, Rotation, SpawnInfo);
+			GetWorld()->SpawnActor<AAmyZombie>(MyAmyZombie, Location, Rotation, SpawnInfo);
 		}
 		else if (compteurHard != 0)
 		{
