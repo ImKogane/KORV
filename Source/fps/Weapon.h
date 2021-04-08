@@ -41,6 +41,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
 		FVector GunOffset;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
+	int Aim;
+
 	/** Weapon range */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stats)
 		int range;
@@ -97,10 +100,14 @@ public:
 
 	int getRange();
 
+	int getAim();
+
 	int getAmmoInClip();
 	int getMaxAmmoInClip();
 
 	void EmptyClip();
+
+	USoundBase* getFireSound();
 	
 
 };

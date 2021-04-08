@@ -91,3 +91,13 @@ void AWeapon::EmptyClip()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, EmptyClipSound, GetActorLocation());
 }
+
+int AWeapon::getAim()
+{
+	return Aim;
+}
+
+USoundBase* AWeapon::getFireSound()
+{
+	return FireSound;
+}

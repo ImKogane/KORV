@@ -290,7 +290,6 @@ void AfpsCharacter::OnFire()
 					if (Hit->GetActor()->GetName().Contains("MyAmy"))
 					{
 						
-
 						AEnnemiess* enemyTouch = Cast<AEnnemiess>(Hit->GetActor());
 						if (enemyTouch)
 						{
@@ -315,6 +314,11 @@ void AfpsCharacter::OnFire()
 					if (AnimInstance != nullptr)
 					{
 						AnimInstance->Montage_Play(FireAnimation, 1.f);
+					}
+
+					if (FireSound != nullptr)
+					{
+						UGameplayStatics::PlaySoundAtLocation(this, actualWeapon->getFireSound(), GetActorLocation());
 					}
 				}
 
@@ -375,7 +379,7 @@ void AfpsCharacter::Walk()
 
 void AfpsCharacter::Aim()
 {
-	FirstPersonCameraComponent->FieldOfView = 60;
+	FirstPersonCameraComponent->FieldOfView = actualWeapon->getAim();
 }
 
 void AfpsCharacter::UnAim()
