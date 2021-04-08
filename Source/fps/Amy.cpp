@@ -17,8 +17,6 @@ void AAmy::BeginPlay()
 
 	GetCharacterMovement()->MaxWalkSpeed = speed;
 
-	AController* p = GetController();
-
 	control = (AAIController*)(GetController());
 }
 

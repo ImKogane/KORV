@@ -10,6 +10,12 @@ UCLASS()
 class FPS_API AEnnemiController : public AActor
 {
 	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, Category = Ennemies)
+		TSubclassOf<class AAmy> MyAmy;
+
+	UPROPERTY(EditAnywhere, Category = Ennemies)
+		TSubclassOf<class AAmyZombie> MyAmyZombie;
 	
 public:	
 	// Sets default values for this actor's properties
