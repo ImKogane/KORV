@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Math/UnrealMathUtility.h"
 #include "EnnemiController.generated.h"
 
 UCLASS()
@@ -24,15 +25,23 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void spawnEnnemies();
+	void resetVar();
 
 	TArray<AActor*> lesPoints;
 
 	int nbEzEnnemis = 2;
-
 	float nbNormalEnnemis = 0;
-
 	float nbHardEnnemis = 0;
+
+	int compteurEz = nbEzEnnemis;
+	int compteurNormal = nbNormalEnnemis;
+	int compteurHard = nbHardEnnemis;
+
+	int nbWave = 1;
+
+	float spawnDelay = 0.f;
+
+	float waveDelay = 0.f;
 
 protected:
 	// Called when the game starts or when spawned

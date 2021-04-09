@@ -3,6 +3,7 @@
 #include "EnnemiController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Math/UnrealMathUtility.h"
+#include "Misc/App.h"
 #include "Spawner.h"
 #include "Amy.h"
 #include "AmyZombie.h"
@@ -20,9 +21,7 @@ void AEnnemiController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//On met en place un timer qui agira toutes les 60 secondes.
-	FTimerHandle MemberTimerHandle; 
-	GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &AEnnemiController::spawnEnnemies, 60.f, true, 0);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawner::StaticClass(), lesPoints);
 }
 
 // Called every frame
@@ -30,41 +29,54 @@ void AEnnemiController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	waveDelay -= DeltaTime;
+
+	if (waveDelay <= 0)
+	{
+		if (spawnDelay <= 0)
+		{
+			//Chiffre random
+			int rand = FMath::RandRange(0, lesPoints.Num() - 1);
+
+			//Infos du point de spawn
+			FVector Location = lesPoints[rand]->GetActorLocation();
+			FRotator Rotation = lesPoints[rand]->GetActorRotation();
+			FActorSpawnParameters SpawnInfo;
+
+			if (compteurEz != 0)
+			{
+				spawnDelay = 0.3f;
+				GetWorld()->SpawnActor<AAmy>(MyAmy, Location, Rotation, SpawnInfo);
+				compteurEz--;
+			}
+			else if (compteurNormal != 0)
+			{
+				spawnDelay = 0.3f;
+				GetWorld()->SpawnActor<AAmyZombie>(MyAmyZombie, Location, Rotation, SpawnInfo);
+				compteurNormal--;
+			}
+			else if (compteurHard != 0)
+			{
+				//spawnDelay = 0.3f;
+				//TODO spawner un ennemi hardcore quand on en aura un
+			}
+
+			//Si on a plus personne a faire spawn
+			else
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "Plus d'ennemies, on continue");
+
+				resetVar();
+			}
+		}
+		spawnDelay -= DeltaTime;
+	}
 }
 
-void AEnnemiController::spawnEnnemies()
+void AEnnemiController::resetVar()
 {
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawner::StaticClass(), lesPoints);
-
-	int compteurEz = nbEzEnnemis;
-	int compteurNormal = nbNormalEnnemis;
-	int compteurHard = nbHardEnnemis;
-
-	int nbTotal = nbEzEnnemis + FMath::Floor(nbNormalEnnemis) + FMath::Floor(nbHardEnnemis);
-
-	//On spawn des ennemis à des endroits différents
-	for (int i = 0; i < nbTotal; i++)
-	{
-		int rand = FMath::RandRange(0, lesPoints.Num() - 1);
-
-		FVector Location = lesPoints[rand]->GetActorLocation();
-		FRotator Rotation = lesPoints[rand]->GetActorRotation();
-		FActorSpawnParameters SpawnInfo;
-
-		if (compteurEz != 0)
-		{
-			GetWorld()->SpawnActor<AAmy>(MyAmy, Location, Rotation, SpawnInfo);
-			compteurEz--;
-		}
-		else if (compteurNormal != 0)
-		{
-			GetWorld()->SpawnActor<AAmyZombie>(MyAmyZombie, Location, Rotation, SpawnInfo);
-		}
-		else if (compteurHard != 0)
-		{
-			//TODO spawner un ennemi hardcore quand on en aura un
-		}
-	}
+	//Délai de vague est reset
+	waveDelay = 10.f;
 
 	//Les ennemis faciles seront toujours 2 de plus
 	nbEzEnnemis += 2;
@@ -74,4 +86,17 @@ void AEnnemiController::spawnEnnemies()
 
 	//Et les ennemis durs seront 1 de plus toutes les dix vagues
 	nbHardEnnemis += 0.1f;
+
+	compteurEz = nbEzEnnemis;
+	compteurNormal = FMath::Floor(nbNormalEnnemis);
+	//compteurHard = FMath::Floor(nbHardEnnemis);
+
+	//On augmente le numéro de la vague ausssi
+	nbWave += 1;
 }
+
+
+//On check si on peux spawner
+	//Si le temps entre deux mob est ok
+		//On spawn
+		//On remet le timer entre mob
