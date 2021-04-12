@@ -13,7 +13,6 @@ AEnnemiController::AEnnemiController()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -45,14 +44,18 @@ void AEnnemiController::Tick(float DeltaTime)
 
 			if (compteurEz != 0)
 			{
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "EZ PZ lemon squeeze");
+
 				spawnDelay = 0.3f;
-				GetWorld()->SpawnActor<AAmy>(MyAmy, Location, Rotation, SpawnInfo);
+				GetWorld()->SpawnActor<AEnnemiess>(Amy, Location, Rotation, SpawnInfo);
 				compteurEz--;
 			}
 			else if (compteurNormal != 0)
 			{
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "Normal quoi");
+
 				spawnDelay = 0.3f;
-				GetWorld()->SpawnActor<AAmyZombie>(MyAmyZombie, Location, Rotation, SpawnInfo);
+				GetWorld()->SpawnActor<AEnnemiess>(AmyZombie, Location, Rotation, SpawnInfo);
 				compteurNormal--;
 			}
 			else if (compteurHard != 0)

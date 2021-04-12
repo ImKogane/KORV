@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h" 
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Ennemiess.generated.h"
 
 UCLASS()
@@ -27,7 +28,6 @@ public:
 	int getDamage();
 
 	void setDamage(int d);
-
 
 	float getSpeed();
 
@@ -63,4 +63,6 @@ protected:
 	FVector dir;
 
 	bool isDead;
+
+	class AAIController* control;
 };

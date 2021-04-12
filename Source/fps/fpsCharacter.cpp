@@ -265,10 +265,6 @@ void AfpsCharacter::OnFire()
 
 				//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Shoot");
 
-
-
-
-
 				//Line trace
 				FVector Loc = SpawnLocation;
 				FRotator Rot = SpawnRotation;
@@ -287,13 +283,13 @@ void AfpsCharacter::OnFire()
 					//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "Impact");
 					UGameplayStatics::SpawnEmitterAtLocation(World, ImpactParticle, Hit->ImpactPoint);
 
-					if (Hit->GetActor()->GetName().Contains("MyAmy"))
+					if (Hit->GetActor()->GetName().Contains("BP_Amy"))
 					{
 						
 						AEnnemiess* enemyTouch = Cast<AEnnemiess>(Hit->GetActor());
 						if (enemyTouch)
 						{
-							enemyTouch->loseLife(actualWeapon->getDamage());	//Deal damage to enemy
+							enemyTouch->loseLife(actualWeapon->getDamage()); //Deal damage to enemy
 							if (enemyTouch->getIsDead() == true)
 							{
 								score += enemyTouch->getScore();

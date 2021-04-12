@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Ennemiess.h"
-#include "GameFramework/Actor.h"
+#include "AIController.h"
+#include "AITypes.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -14,15 +16,23 @@ AEnnemiess::AEnnemiess()
 // Called when the game starts or when spawned
 void AEnnemiess::BeginPlay()
 {
-	score = life;
 	Super::BeginPlay();
 
+	score = life;
+
+	GetCharacterMovement()->MaxWalkSpeed = speed;
+
+	control = (AAIController*)(GetController());
 }
 
 // Called every frame
 void AEnnemiess::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	ACharacter* myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	FAIMoveRequest movReq = myCharacter->GetActorLocation();
+	control->MoveTo(movReq);
 }
 
 int AEnnemiess::getLife()
@@ -42,9 +52,7 @@ void AEnnemiess::loseLife(int l)
 	{
 		isDead = true;
 		Destroy();
-	}
-
-	
+	}	
 }
 
 int AEnnemiess::getDamage()
