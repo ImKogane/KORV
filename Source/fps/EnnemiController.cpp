@@ -8,6 +8,7 @@
 #include "Amy.h"
 #include "AmyZombie.h"
 
+
 // Sets default values
 AEnnemiController::AEnnemiController()
 {
@@ -52,7 +53,7 @@ void AEnnemiController::Tick(float DeltaTime)
 			}
 			else if (compteurNormal != 0)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "Normal quoi");
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Normal quoi");
 
 				spawnDelay = 0.3f;
 				GetWorld()->SpawnActor<AEnnemiess>(AmyZombie, Location, Rotation, SpawnInfo);
@@ -60,8 +61,11 @@ void AEnnemiController::Tick(float DeltaTime)
 			}
 			else if (compteurHard != 0)
 			{
-				//spawnDelay = 0.3f;
-				//TODO spawner un ennemi hardcore quand on en aura un
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "Ah ouais");
+
+				spawnDelay = 0.3f;
+				GetWorld()->SpawnActor<AEnnemiess>(AmyGothic, Location, Rotation, SpawnInfo);
+				compteurHard--;
 			}
 
 			//Si on a plus personne a faire spawn

@@ -32,4 +32,15 @@ void AfpsHUD::DrawHUD()
 	FCanvasTileItem TileItem( CrosshairDrawPosition, CrosshairTex->Resource, FLinearColor::White);
 	TileItem.BlendMode = SE_BLEND_Translucent;
 	Canvas->DrawItem( TileItem );
+
+	DrawText
+	(
+		"Yes",
+		FLinearColor::Red,
+		10,
+		20
+	);
+
+
+	//AfpsCharacter* OtherCharacter = Cast<AfpsCharacter>(...);
 }

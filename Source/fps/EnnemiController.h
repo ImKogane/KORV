@@ -17,6 +17,9 @@ class FPS_API AEnnemiController : public AActor
 
 	UPROPERTY(EditAnywhere, Category = Ennemies)
 		TSubclassOf<class AEnnemiess> AmyZombie;
+
+	UPROPERTY(EditAnywhere, Category = Ennemies)
+		TSubclassOf<class AEnnemiess> AmyGothic;
 	
 public:	
 	// Sets default values for this actor's properties

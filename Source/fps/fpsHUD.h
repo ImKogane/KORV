@@ -3,6 +3,7 @@
 #pragma once 
 
 #include "CoreMinimal.h"
+#include "fpsCharacter.h"
 #include "GameFramework/HUD.h"
 #include "fpsHUD.generated.h"
 
@@ -21,5 +22,7 @@ private:
 	/** Crosshair asset pointer */
 	class UTexture2D* CrosshairTex;
 
+
+	TArray< AfpsCharacter* > players;
 };
 
