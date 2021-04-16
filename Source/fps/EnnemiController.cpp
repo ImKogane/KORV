@@ -89,14 +89,14 @@ void AEnnemiController::resetVar()
 	nbEzEnnemis += 2;
 
 	//Les ennemis normaux seront un de plus toutes les 4 vagues
-	nbNormalEnnemis += 0.25f;
+	nbNormalEnnemis += 0.5f;
 
 	//Et les ennemis durs seront 1 de plus toutes les dix vagues
-	nbHardEnnemis += 0.1f;
+	nbHardEnnemis += 0.2f;
 
 	compteurEz = nbEzEnnemis;
 	compteurNormal = FMath::Floor(nbNormalEnnemis);
-	//compteurHard = FMath::Floor(nbHardEnnemis);
+	compteurHard = FMath::Floor(nbHardEnnemis);
 
 	//On augmente le numéro de la vague ausssi
 	nbWave += 1;
