@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "fpsHUD.h"
+#include "fpsGameMode.h"
 #include "Engine/Canvas.h"
 #include "Engine/Texture2D.h"
 #include "TextureResource.h"
@@ -17,6 +18,7 @@ AfpsHUD::AfpsHUD()
 
 void AfpsHUD::DrawHUD()
 {
+	AfpsGameMode* const gamemode = GetWorld()->GetAuthGameMode<AfpsGameMode>();
 	Super::DrawHUD();
 
 	// Draw very simple crosshair
@@ -35,7 +37,7 @@ void AfpsHUD::DrawHUD()
 
 	DrawText
 	(
-		"Yes",
+		FString::FromInt(gamemode->score),
 		FLinearColor::Red,
 		10,
 		20

@@ -7,14 +7,21 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Ennemiess.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class FPS_API AEnnemiess : public ACharacter
 {
 	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, Category = Box)
+		UBoxComponent* BoxCollider;
 	
 public:	
 	// Sets default values for this actor's properties
 	AEnnemiess();
+
+	//void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

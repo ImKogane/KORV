@@ -4,6 +4,7 @@
 #include "fpsProjectile.h"
 #include "Amy.h"
 #include "Ennemiess.h"
+#include "fpsGameMode.h"
 #include "Engine/EngineTypes.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -192,8 +193,8 @@ void AfpsCharacter::OnFire()
 							enemyTouch->loseLife(actualWeapon->getDamage()); //Deal damage to enemy
 							if (enemyTouch->getIsDead() == true)
 							{
-								score += enemyTouch->getScore();
-								GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, FString::Printf(TEXT("%lld"), score));
+								AfpsGameMode* const gamemode = GetWorld()->GetAuthGameMode<AfpsGameMode>();
+								gamemode->score+= enemyTouch->getScore();
 							}
 
 						}
@@ -292,7 +293,6 @@ void AfpsCharacter::SwitchWeapon()
 	}
 	//actualWeapon->HideMesh();
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, FString::Printf(TEXT("%lld"), weaponIndex));
 	//FP_Gun->DestroyComponent();
 	
 
@@ -302,7 +302,6 @@ void AfpsCharacter::SwitchWeapon()
 
 	if (weaponIndex >= listWeapon.Num())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "Reset");
 		weaponIndex = 0;
 	}
 }

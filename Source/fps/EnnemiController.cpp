@@ -4,6 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Math/UnrealMathUtility.h"
 #include "Misc/App.h"
+#include "Components/BoxComponent.h"
 #include "Spawner.h"
 #include "Amy.h"
 #include "AmyZombie.h"
@@ -45,7 +46,6 @@ void AEnnemiController::Tick(float DeltaTime)
 
 			if (compteurEz != 0)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "EZ PZ lemon squeeze");
 
 				spawnDelay = 0.3f;
 				GetWorld()->SpawnActor<AEnnemiess>(Amy, Location, Rotation, SpawnInfo);
@@ -53,7 +53,6 @@ void AEnnemiController::Tick(float DeltaTime)
 			}
 			else if (compteurNormal != 0)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Normal quoi");
 
 				spawnDelay = 0.3f;
 				GetWorld()->SpawnActor<AEnnemiess>(AmyZombie, Location, Rotation, SpawnInfo);
@@ -61,7 +60,6 @@ void AEnnemiController::Tick(float DeltaTime)
 			}
 			else if (compteurHard != 0)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "Ah ouais");
 
 				spawnDelay = 0.3f;
 				GetWorld()->SpawnActor<AEnnemiess>(AmyGothic, Location, Rotation, SpawnInfo);
@@ -71,8 +69,6 @@ void AEnnemiController::Tick(float DeltaTime)
 			//Si on a plus personne a faire spawn
 			else
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, "Plus d'ennemies, on continue");
-
 				resetVar();
 			}
 		}

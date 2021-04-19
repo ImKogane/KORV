@@ -13,6 +13,8 @@ class AfpsGameMode : public AGameModeBase
 
 public:
 	AfpsGameMode();
+	int score;
+
 };
 
 
